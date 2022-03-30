@@ -1,0 +1,35 @@
+[
+    {
+        "number": 25,
+        "name": "Lizard"
+    },
+    {
+        "name": "Dog",
+        "number": 250
+    },
+    {
+        "name": "Cat",
+        "number": 115
+    },
+    {
+        "name": "Bird",
+        "number": 50
+    },
+    {
+        "name": "Guinea pig",
+        "number": 30
+    },
+    {
+        "name": "Hamster",
+        "number": 45
+    },
+    {
+        "name": "Fish",
+        "number": 75
+    },
+    {
+        "name": "Ferret",
+        "number": 10
+    }
+
+]
