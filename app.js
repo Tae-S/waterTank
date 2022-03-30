@@ -182,23 +182,16 @@ async function draw()
                 console.log('here to check befor breakpoint: ', breakpoint)
                 breakpoint = i
                 console.log('here to check ', breakpoint, ' data[j: ', data[j]['number'], ' current data point: ', current_data_point, ' initial_big:', initial_big)
-                // groups.push({
-                //     left: i,
-                //     left_index: ,
-                //     right: ,
-                //     right_index: 
-                // })
             }
             else if(breakpoint >= 0 && data[j]['number'] <= lastBig){
                 localmaxR = Math.max(data[j]['number'], localmaxR)
-                //count >1 of lastBig
             }
         }
     }
     if(localmaxR !== Number.MIN_SAFE_INTEGER){
         let lb_index = data.findIndex((da)=>{ return da['number'] === lastBig})
         let lm_index = data.findIndex((da, breakpoint = breakpoint)=>{ return da['number'] === localmaxR})
-        console.log(lastBig, localmaxR, lb_index, lm_index)
+        // console.log(lastBig, localmaxR, lb_index, lm_index)
         // console.log('pushed from here', localmaxR, lastBig)
         groups.push({
             left_index: Math.min(lm_index, lb_index),
@@ -217,8 +210,8 @@ async function draw()
     .attr('x', d =>xScale(xAccess(d))) //removed + chartWidth
     .attr('y', d =>{
         const _index = data.indexOf(d)
-        let ansR = findFirst(data, d, _index)
-        let ansL = findFirstLeft(data, d, _index)
+        // let ansR = findFirst(data, d, _index)
+        // let ansL = findFirstLeft(data, d, _index)
         let groupno = -1
         for(let i=0; i<groups.length; i++){
             if(_index >= groups[i].left_index && _index <= groups[i].right_index){
@@ -243,15 +236,15 @@ async function draw()
         }
         
         const res = yScale( Math.min(groups[groupno].left, groups[groupno].right))
-        if(groupno >=0) console.log(yAccess(d), ' in groupno: ', groupno, ' with left,right: ', groups[groupno].left, ' and ', groups[groupno].right, ' with,', res )
+        // if(groupno >=0) console.log(yAccess(d), ' in groupno: ', groupno, ' with left,right: ', groups[groupno].left, ' and ', groups[groupno].right, ' with,', res )
         if(groupno === -1) console.warn("NO GROUP FOUND")
         else return res
     })
     .attr('width', d => chartWidth)
     .attr('height', d =>{
         const _index = data.indexOf(d)
-        let ansR = findFirst(data, d, _index)
-        let ansL = findFirstLeft(data, d, _index)
+        // let ansR = findFirst(data, d, _index)
+        // let ansL = findFirstLeft(data, d, _index)
         let groupno = -1
         for(let i=0; i<groups.length; i++){
             if(_index >= groups[i].left_index && _index <= groups[i].right_index){
@@ -273,8 +266,7 @@ async function draw()
                     break
             }
         }
-        
-        if(groupno >=0) console.log(yAccess(d), ' in groupno', groupno, ' with ', groups[groupno])
+        // if(groupno >=0) console.log(yAccess(d), ' in groupno', groupno, ' with ', groups[groupno])
         const res = yScale( Math.min(groups[groupno].left, groups[groupno].right))
         if(groupno === -1) console.warn("NO GROUP FOUND")
         else return dims.boundedHeight - res
@@ -323,7 +315,6 @@ function findFirst(data, d, current_index){
     let _max = Number.MIN_SAFE_INTEGER
     let found = false
     for(let i=current_index+1; i<data.length; i++){
-        // console.log(data[i]['number'], d['number'])
         if(data[i]['number'] > d['number'] && i > current_index && !found){
             found = true
             ans.number = data[i]['number']
@@ -332,14 +323,12 @@ function findFirst(data, d, current_index){
         else if(data[i]['number'] < d['number'] && i > current_index){
             let temp = _max
             _max = Math.max(data[i]['number'], _max)
-            // if(data[i]['number'] == 4) console.log(_max, temp)
             if(temp !== _max) ans.index = i
         }
     }
     
     if(ans.number === null){
         ans.number = _max === Number.MIN_SAFE_INTEGER? d['number']:_max
-        // console.log('here for: ', d['number'], _max)
     }
     return ans
 }
