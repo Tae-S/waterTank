@@ -221,18 +221,22 @@ async function draw()
         }
         console.log("GROUPNO: ", groupno)
         if(groupno < 0){
-            let _dist = Math.max((data.length-1) - groups[groups.length-1].left_index, (data.length-1) - groups[groups.length-1].right)
-            switch (_dist) {
-                case data.length-1 - groups[groups.length-1].left_index:
-                    return yScale(Math.min(groups[groups.length-1].left, data[data.length-1]['number']))
-                    break
-                case data.length-1 - groups[groups.length-1].right_index:
-                    return yScale(Math.min(groups[groups.length-1].right, data[data.length-1]['number']))
-                    break
-                default:
-                    return 0
-                    break
-            }
+            // let _dist = Math.max((data.length-1) - groups[groups.length-1].left_index, (data.length-1) - groups[groups.length-1].right)
+            let current_biggest_on_right = nextBig(data, d, _index)
+            console.log('current biggest on the right', current_biggest_on_right)
+            console.log(Math.min(Math.max(groups[groups.length-1].left, groups[groups.length-1].right), current_biggest_on_right.number))
+            return yScale(Math.min(Math.max(groups[groups.length-1].left, groups[groups.length-1].right), current_biggest_on_right.number))
+            // switch (_dist) {
+            //     case data.length-1 - groups[groups.length-1].left_index:
+            //         return yScale(Math.min(groups[groups.length-1].left, data[data.length-1]['number']))
+            //         break
+            //     case data.length-1 - groups[groups.length-1].right_index:
+            //         return yScale(Math.min(groups[groups.length-1].right, data[data.length-1]['number']))
+            //         break
+            //     default:
+            //         return 0
+            //         break
+            // }
         }
         
         const res = yScale( Math.min(groups[groupno].left, groups[groupno].right))
@@ -240,7 +244,7 @@ async function draw()
         if(groupno === -1) console.warn("NO GROUP FOUND")
         else return res
     })
-    .attr('width', d => chartWidth)
+    .attr('width', d => chartWidth+0.1)
     .attr('height', d =>{
         const _index = data.indexOf(d)
         // let ansR = findFirst(data, d, _index)
@@ -253,18 +257,22 @@ async function draw()
             }
         }
         if(groupno < 0){
-            let _dist = Math.max((data.length-1) - groups[groups.length-1].left_index, (data.length-1) - groups[groups.length-1].right)
-            switch (_dist) {
-                case data.length-1 - groups[groups.length-1].left_index:
-                    return dims.boundedHeight - yScale(Math.min(groups[groups.length-1].left, data[data.length-1]['number']))
-                    break
-                case data.length-1 - groups[groups.length-1].right_index:
-                    return dims.boundedHeight - yScale(Math.min(groups[groups.length-1].right, data[data.length-1]['number']))
-                    break
-                default:
-                    return 0
-                    break
-            }
+            let current_biggest_on_right = nextBig(data, d, _index)
+            console.log('current biggest on the right', current_biggest_on_right)
+            console.log(Math.min(Math.max(groups[groups.length-1].left, groups[groups.length-1].right), current_biggest_on_right.number))
+            return dims.boundedHeight - yScale(Math.min(Math.max(groups[groups.length-1].left, groups[groups.length-1].right), current_biggest_on_right.number))
+            // let _dist = Math.max((data.length-1) - groups[groups.length-1].left_index, (data.length-1) - groups[groups.length-1].right)
+            // switch (_dist) {
+            //     case data.length-1 - groups[groups.length-1].left_index:
+            //         return dims.boundedHeight - yScale(Math.min(groups[groups.length-1].left, data[data.length-1]['number']))
+            //         break
+            //     case data.length-1 - groups[groups.length-1].right_index:
+            //         return dims.boundedHeight - yScale(Math.min(groups[groups.length-1].right, data[data.length-1]['number']))
+            //         break
+            //     default:
+            //         return 0
+            //         break
+            // }
         }
         // if(groupno >=0) console.log(yAccess(d), ' in groupno', groupno, ' with ', groups[groupno])
         const res = yScale( Math.min(groups[groupno].left, groups[groupno].right))

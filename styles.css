@@ -1,0 +1,37 @@
+*{
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+    /* color: white; */
+    color:greenyellow;
+    letter-spacing:1px;
+}
+
+body{
+    /* background: linear-gradient(90deg, rgba(177,13,235,1) 0%, rgba(212,55,255,1) 100%); */
+    background: #555;
+}
+
+.inp-label{
+    position: relative;
+    
+}
+
+.inp-label:before{
+    content: '';
+    position: absolute;
+    background-color: rgb(94, 185, 41);
+    width: 65%;
+    height:2px;
+    top:100%;
+    display: inline-block;
+    transform: translateX(50%);
+    margin-left:0.5em;
+}
+
+.input{
+    outline:none;
+    border: none;
+    background: transparent;
+    margin-left:1em;
+}
