@@ -14,7 +14,8 @@ body{
 
 .inp-label{
     position: relative;
-    
+    top: 1em;
+    left: 0.5em;
 }
 
 .inp-label:before{
@@ -34,4 +35,63 @@ body{
     border: none;
     background: transparent;
     margin-left:1em;
+}
+
+.legend{
+    width: 200px;
+    height: 60px;
+    /* border:1px solid black; */
+    position: absolute;
+    top: 1em;
+    right: 10em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.legend > p{
+    padding: 4px 5px;
+}
+
+.walls{
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-color: black;
+    margin-left: -1px;
+}
+
+.water{
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-color: rgba(45, 59, 46, 0.48);
+    
+}
+
+.clear{
+    outline:none;
+    border:none;
+    background-color: transparent;
+    position: relative;
+    top: 50px;
+    left: 0.5em;
+    background: tomato;
+    padding: 5px 10px;
+    border-radius: 10px;
+    color: rgb(235, 222, 222);
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.clear:hover{
+    background: rgb(223, 86, 62);
+    color: rgb(196, 190, 190);
+}
+
+#wrapper{
+    /* border:1px solid green; */
+    margin-top: 5em;
 }

@@ -1,5 +1,6 @@
 import * as d3 from 'https://unpkg.com/d3?module'
 
+const clear = document.querySelector('.clear')
 const form = document.querySelector('.form')
 let valuesArray = []
 let valuesArrayObj = []
@@ -26,6 +27,11 @@ form.addEventListener('submit', (e)=>{
     draw()
 })
 
+//clear input fields
+clear.addEventListener('click', ()=>{
+    window.location.reload()
+})
+
 async function draw()
 {
     let seenIndices = []
@@ -34,10 +40,10 @@ async function draw()
     // let data = valuesArray
     // const yAccess = d => d
     const yAccess = d => d['number']
-    console.log(yAccess(data[0]))
+    // console.log(yAccess(data[0]))
     const xAccess = d => data.indexOf(d, lastIndex++)
     // console.log(xAccess(data[2]))
-    console.log(typeof(yAccess(data[0])))
+    // console.log(typeof(yAccess(data[0])))
     const dims = {
         width: 0.8 * window.innerWidth,
         height: 30 * parseFloat(window.getComputedStyle(document.body,null).getPropertyValue("font-size")),
@@ -113,8 +119,10 @@ async function draw()
     const binsGroup = bounds.append('g')
     
     const binGroups = binsGroup.selectAll('g')
+    .attr('class', 'barrect')
     .data(bins)
     .join('g')
+    
 
     const chartWidth = xScale(xAccess(data[2])) - xScale(xAccess(data[1]))
 
@@ -124,8 +132,12 @@ async function draw()
     .attr('x', d => xScale(xAccess(d)) + 1)
     .attr('y', d => yScale(yAccess(d)))
     .attr('width', chartWidth )
+    // .style('fill', 'rgb(95, 130, 138)')
     .attr('height', d => dims.boundedHeight - yScale(yAccess(d)))
     
+    const raiserects = d3.selectAll('.barrect')
+    raiserects.raise()
+
     lastIndex = 0
     
     let groups = []
@@ -162,8 +174,8 @@ async function draw()
                 tempL = initial_big === null? tempL : Math.max(tempL, initial_big)
                 let tempLi = breakpoint<0? i: data.findIndex((da, breakpoint=breakpoint)=>{return da['number'] === Math.max(data[breakpoint]['number'], current_data_point)})
                 tempLi = initial_big === null? tempLi : data.findIndex((da, breakpoint=initial_big_index)=>{return da['number'] === Math.max(data[breakpoint]['number'], initial_big)})
-                    console.log('pushed from here ', tempL, data[j]['number'], j)
-                    console.log('current_data_point', current_data_point, data[j]['number'], ' data[j')
+                    // console.log('pushed from here ', tempL, data[j]['number'], j)
+                    // console.log('current_data_point', current_data_point, data[j]['number'], ' data[j')
                 groups.push({
                     left: tempL,
                     left_index: tempLi,
@@ -179,9 +191,9 @@ async function draw()
             else if(breakpoint < 0 && data[j]['number']<=current_data_point){
                 initial_big = current_data_point
                 initial_big_index = i
-                console.log('here to check befor breakpoint: ', breakpoint)
+                // console.log('here to check before breakpoint: ', breakpoint)
                 breakpoint = i
-                console.log('here to check ', breakpoint, ' data[j: ', data[j]['number'], ' current data point: ', current_data_point, ' initial_big:', initial_big)
+                // console.log('here to check ', breakpoint, ' data[j: ', data[j]['number'], ' current data point: ', current_data_point, ' initial_big:', initial_big)
             }
             else if(breakpoint >= 0 && data[j]['number'] <= lastBig){
                 localmaxR = Math.max(data[j]['number'], localmaxR)
@@ -204,9 +216,12 @@ async function draw()
     //end utils
     
 
-    const waterRects = binGroups.append('rect')
-    .style('opacity', 0.7)
+    const waterRects = binGroups.insert('rect','.barrect')
+    .style('opacity', 0.3)
     .style('fill', `rgb(${lastIndex * 20}, 0, 0`)
+    // .style('fill', '#d4f1f9')
+    .style('position', 'relative')
+    .style('z-index', '-10')
     .attr('x', d =>xScale(xAccess(d))) //removed + chartWidth
     .attr('y', d =>{
         const _index = data.indexOf(d)
@@ -223,8 +238,8 @@ async function draw()
         if(groupno < 0){
             // let _dist = Math.max((data.length-1) - groups[groups.length-1].left_index, (data.length-1) - groups[groups.length-1].right)
             let current_biggest_on_right = nextBig(data, d, _index)
-            console.log('current biggest on the right', current_biggest_on_right)
-            console.log(Math.min(Math.max(groups[groups.length-1].left, groups[groups.length-1].right), current_biggest_on_right.number))
+            // console.log('current biggest on the right', current_biggest_on_right)
+            // console.log(Math.min(Math.max(groups[groups.length-1].left, groups[groups.length-1].right), current_biggest_on_right.number))
             return yScale(Math.min(Math.max(groups[groups.length-1].left, groups[groups.length-1].right), current_biggest_on_right.number))
             // switch (_dist) {
             //     case data.length-1 - groups[groups.length-1].left_index:
@@ -258,8 +273,8 @@ async function draw()
         }
         if(groupno < 0){
             let current_biggest_on_right = nextBig(data, d, _index)
-            console.log('current biggest on the right', current_biggest_on_right)
-            console.log(Math.min(Math.max(groups[groups.length-1].left, groups[groups.length-1].right), current_biggest_on_right.number))
+            // console.log('current biggest on the right', current_biggest_on_right)
+            // console.log(Math.min(Math.max(groups[groups.length-1].left, groups[groups.length-1].right), current_biggest_on_right.number))
             return dims.boundedHeight - yScale(Math.min(Math.max(groups[groups.length-1].left, groups[groups.length-1].right), current_biggest_on_right.number))
             // let _dist = Math.max((data.length-1) - groups[groups.length-1].left_index, (data.length-1) - groups[groups.length-1].right)
             // switch (_dist) {
@@ -294,7 +309,6 @@ async function draw()
     })
     .attr('y', d => yScale(yAccess(d)))
     .text(d => (yAccess(d)).toString())
-
 
 }
 
